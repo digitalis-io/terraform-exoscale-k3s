@@ -11,7 +11,7 @@ runcmd:
   # ── k3s server install ────────────────────────────────
   - echo "Installing k3s server..."
   - |
-    export INSTALL_K3S_EXEC="server ${k3s_server_extra_args}"
+    export INSTALL_K3S_EXEC="server --flannel-backend=${flannel_backend} ${k3s_server_extra_args}"
     export K3S_TOKEN="${k3s_token}"
 %{ if k3s_version != "" ~}
     export INSTALL_K3S_VERSION="${k3s_version}"

@@ -63,7 +63,18 @@ resource "exoscale_security_group_rule" "wireguard" {
   start_port             = 51820
   end_port               = 51821
   user_security_group_id = exoscale_security_group.cluster.id
-  description            = "Allow WireGuard within cluster"
+  description            = "Allow WireGuard (flannel wireguard-native overlay) within cluster"
+}
+
+# Kubelet API — required for API server → pod communication (webhooks, exec, logs)
+resource "exoscale_security_group_rule" "kubelet" {
+  security_group_id      = exoscale_security_group.cluster.id
+  type                   = "INGRESS"
+  protocol               = "TCP"
+  start_port             = 10250
+  end_port               = 10250
+  user_security_group_id = exoscale_security_group.cluster.id
+  description            = "Allow kubelet API within cluster"
 }
 
 # Inter-node rules (only when private network is enabled)
