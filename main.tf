@@ -56,6 +56,17 @@ resource "exoscale_security_group_rule" "k3s_api" {
   description       = "Allow k3s API"
 }
 
+# Kubelet API — internode
+resource "exoscale_security_group_rule" "kubelet_internode" {
+  security_group_id      = exoscale_security_group.cluster.id
+  type                   = "INGRESS"
+  protocol               = "TCP"
+  start_port             = 6443
+  end_port               = 6443
+  user_security_group_id = exoscale_security_group.cluster.id
+  description            = "Allow kubelet API from agents"
+}
+
 resource "exoscale_security_group_rule" "wireguard" {
   security_group_id      = exoscale_security_group.cluster.id
   type                   = "INGRESS"
